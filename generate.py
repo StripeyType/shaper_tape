@@ -26,8 +26,14 @@ def generate(d, rows, cols):
         rand = randint(0, 65536)
         rand |= 1 | (1<<7) | (1<<8) | (1<<15)
         top = bin(rand)[3:9]
-        bottom = bin(rand)[10:16]
-        if bin(rand).count('1') == 10 and (top != reversed(bottom)) and not rand in vals:
+        bottom = bin(rand)[11:17]
+
+        if bin(rand).count('1') != 10:
+            continue
+        if top == reversed(bottom):
+            continue
+
+        if not rand in vals:
             vals.append(rand)
 
     row_col = []
