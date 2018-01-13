@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-import sys
+import sys, os
 from svgwrite import Drawing
 from random import randint
 
 if len(sys.argv) < 4:
-    print('usage: {} <rows> <columns> <outfile>'.format(sys.argv[0]))
+    print('usage: {} <rows> <columns> <number of files> <output_path>'.format(sys.argv[0]))
     raise SystemExit
 
 dpi = 96
@@ -20,7 +20,7 @@ border = 5*scale
 xoff = rect_w/2 + border
 yoff = rect_h/2 + border
 
-def generate(d, rows, cols):
+def generate(d, rows, cols, previous=[]):
     vals = []
     while len(vals) < (rows*cols):
         rand = randint(0, 65536)
@@ -28,13 +28,18 @@ def generate(d, rows, cols):
         top = bin(rand)[3:9]
         bottom = bin(rand)[11:17]
 
+        # require 10 total dots
         if bin(rand).count('1') != 10:
             continue
+
+        # discard if dots are in a rotationally-symmetric pattern
         if top == ''.join(reversed(bottom)):
             continue
 
-        if not rand in vals:
+        # check if an exact duplicate exists
+        if not rand in vals and not rand in previous:
             vals.append(rand)
+
 
     row_col = []
     for r in range(rows):
@@ -66,10 +71,22 @@ def generate(d, rows, cols):
                 d.add(dwg.circle(center=((-3.5 + i)*circle_grid + xoff2, circle_grid/2 + yoff2), r=circle_rad, fill='white'))
             if spots & (1<<(i+8)):
                 d.add(dwg.circle(center=((-3.5 + i)*circle_grid + xoff2, -circle_grid/2 + yoff2), r=circle_rad, fill='white'))
+    return vals
 
 rows = int(sys.argv[1])
 cols = int(sys.argv[2])
-dwg = Drawing(filename=sys.argv[3], debug=True)
-generate(dwg, rows, cols)
+num_files = int(sys.argv[3])
+path = sys.argv[4]
 
-dwg.save()
+previous = []
+
+max_count = 903 # total number of valid fiducials (based on exhaustive search)
+
+if rows*cols*num_files > max_count:
+    print('error, only {} fiducials exist; requested {}'.format(max_count, rows*cols*num_files))
+    raise SystemExit
+
+for i in range(num_files):
+    dwg = Drawing(filename=os.path.join(path, '{}.svg'.format(i)), debug=True)
+    previous.extend(generate(dwg, rows, cols, previous))
+    dwg.save()

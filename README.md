@@ -13,8 +13,9 @@ sudo pip3 install svgwrite
 
 #### Usage
 ```bash
-./generate.py <rows> <cols> <output path/foo.svg>
+./generate.py <rows> <columns> <number of files> <output_path>
 ```
+Multiple globally-unique files may be generated, written as 'output_path/[0, 1, 2, ...].svg'
 
 #### Example 3x3 output:
 <img src="./test.svg">
