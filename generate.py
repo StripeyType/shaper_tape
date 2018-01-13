@@ -25,7 +25,9 @@ def generate(d, rows, cols):
     while len(vals) < (rows*cols):
         rand = randint(0, 65536)
         rand |= 1 | (1<<7) | (1<<8) | (1<<15)
-        if bin(rand).count('1') == 10 and not rand in vals:
+        top = bin(rand)[3:9]
+        bottom = bin(rand)[10:16]
+        if bin(rand).count('1') == 10 and (top != reversed(bottom)) and not rand in vals:
             vals.append(rand)
 
     row_col = []

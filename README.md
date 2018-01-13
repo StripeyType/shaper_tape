@@ -4,8 +4,7 @@
 Inferred fiducial features:
 - there are always 10 dots
 - the left-most and right-most columns are always present
-
-Most (~97%) but not all generated fiducials appear to be accepted by the Origin.
+- must not be rotationally-symmetric
 
 #### Dependencies
 ```bash
