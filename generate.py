@@ -30,7 +30,7 @@ def generate(d, rows, cols):
 
         if bin(rand).count('1') != 10:
             continue
-        if top == reversed(bottom):
+        if top == ''.join(reversed(bottom)):
             continue
 
         if not rand in vals:
