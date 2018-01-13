@@ -24,7 +24,8 @@ def generate(d, rows, cols):
     vals = []
     while len(vals) < (rows*cols):
         rand = randint(0, 65536)
-        if not rand in vals:
+        rand |= 1 | (1<<7) | (1<<8) | (1<<15)
+        if bin(rand).count('1') == 10 and not rand in vals:
             vals.append(rand)
 
     row_col = []
