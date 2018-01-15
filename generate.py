@@ -12,13 +12,13 @@ dpi = 96
 scale = dpi/25.4
 fillet_rad = 2.5*scale
 circle_rad = 1.25*scale
-circle_grid = 5*scale
+circle_grid = 5.08*scale
 rect_w = 43.*scale
 rect_h = 12.7*scale
 
-border = 5*scale
-xoff = rect_w/2 + border
-yoff = rect_h/2 + border
+border = 2.25*scale
+xoff = rect_w/2 + border + 2.75*scale
+yoff = rect_h/2 + border + 2.75*scale
 
 def generate(d, rows, cols, previous=[]):
     vals = []
